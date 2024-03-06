@@ -1,0 +1,14 @@
+dlib
+face_alignment
+mediapipe
+numpy
+omegaconf
+opencv-python
+pyyaml
+scipy
+timm
+torch
+torchvision
+flask
+flask-socketio
+gevent
