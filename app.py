@@ -51,8 +51,8 @@ def gaze_estimation(image_data) -> List[Dict]:
     return gaze_model_for_flask.run(img)
 
 
-@app.route('/pre')
-def index_pre():
+@app.route('/')
+def index():
     """
     这个测试页面是一个前置的用于相机标定的页面，
     点击四个角点，获取人眼在观测屏幕的角度偏转范围
@@ -120,13 +120,13 @@ def handle_point_and_image(data):
              'gaze_infos': gaze_infos,
              'status': 'success'
          },
-         broadcast=True
+         broadcast=False   # todo: 只传给触发事件的客户端，不能用广播
          )
     # 保存每一次的角度
     session["gaze_infos_of_clicked_points"].update({data['point_id']: gaze_infos})
 
     if sorted(session["valid_clicked_point_ids"]) == sorted(POINT_IDs):
-        emit('start_estimation', broadcast=True)
+        emit('start_estimation', broadcast=False)
         print("gaze_infos_of_clicked_points: ", session["valid_clicked_point_ids"])
 
         # # dummy

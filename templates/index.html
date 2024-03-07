@@ -14,15 +14,16 @@
 <body>
     <h1 class="centered-heading">Camera Calibration & Gaze Estimation</h1>
     <div id="myModal" class="modal">
-        <p>凝视并点击页面四个角点，随后进入视线估计</p>
-        <span class="close-button" onclick="closeModal()">关闭</span>
+        <p>浏览器全屏，凝视并点击页面四个角点，点击时视线保持片刻；</p>
+        <p>随后进入视线估计。</p>
+        <button id="close-button" onclick="closeModal()">确定</button>
     </div>
     <div class="container">
         <div class="video-container">   <!-- 包含一个视频和截图画布-->
             <video id="videoElement" autoplay></video>
             <canvas id="canvasElement"></canvas>
         </div>
-        <div class="chart-container">   <!-- 包含一个饼图画布-->
+        <div class="chart-container">   <!-- 包含一个饼图画，开始时不显示 -->
             <canvas id="timeChart" width="400" height="400"></canvas>
         </div>
     </div>
@@ -47,6 +48,7 @@
         const canvas_cap = document.getElementById('canvasElement');
         const ctx_cap = canvas_cap.getContext('2d');
 
+        // document.getElementById('timeChart').style.visibility = "hidden";  // css中已经设置好隐藏了
         let timeChart; // 在全局范围内定义一个变量用于存储时间图表实例
 
         // 创建饼图测试
@@ -64,6 +66,10 @@
 
         // 初始化页面时打开摄像头
         openCamera(video);
+
+        // 设置和video尺寸相同
+        // canvas_cap.width = video.videoWidth;
+        // canvas_cap.height = video.videoHeight;
 
         // 点击事件处理函数
         async function handlePointClick(pointId) {
@@ -106,8 +112,11 @@
 
             // 显示canvas_cap，同时切换布局
             document.getElementById('canvasElement').style.display = 'inline';
-            canvas_cap.width = 640;
-            canvas_cap.height = 480;
+            // canvas_cap.width = video.videoWidth;
+            // canvas_cap.height = video.videoHeight;
+
+            // 显示timeChart
+            document.getElementById('timeChart').style.visibility = 'visible';
 
             // 正式开始视线估计
             console.log("start estimation");
